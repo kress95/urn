@@ -4,7 +4,7 @@ if not table.unpack then table.unpack = unpack end
 local load = load if _VERSION:find("5.1") then load = function(x, n, _, env) local f, e = loadstring(x, n) if not f then return f, e end if env then setfenv(f, env) end return f end end
 local _select, _unpack, _pack, _error = select, table.unpack, table.pack, error
 local _libs = {}
-local _2b_1, _2d_1, _2e2e_1, _2f3d_1, _3c3d_1, _3c_1, _3d_1, _3e3d_1, _3e_1, addArgument_21_1, addParen1, any1, append_21_1, apply1, arg1, beginBlock_21_1, between_3f_1, builtin_3f_1, builtins1, caar1, cadr1, car1, child1, coloured1, compileBlock1, compileExpression1, concat1, constVal1, doNodeError_21_1, empty_3f_1, eq_3f_1, error1, escapeVar1, exit_21_1, expectType_21_1, expect_21_1, find1, format1, formatNode1, formatOutput_21_1, getIdx1, getSource1, getVar1, get_21_1, getenv1, getinfo1, gsub1, last1, len_23_1, line_21_1, list1, lookup1, lower1, makeNil1, map2, match1, matcher2, min1, n1, next1, nth1, number_3f_1, open1, pcall1, popLast_21_1, pretty1, print1, pushCdr_21_1, pushEscapeVar_21_1, putNodeWarning_21_1, quoted1, removeNth_21_1, rep1, require1, resolveNode1, runPass1, scoreNodes1, self1, setIdx_21_1, sethook1, slice1, sort1, splice1, split1, string_3f_1, sub1, symbol_2d3e_string1, tonumber1, tostring1, type1, type_23_1, unmangleIdent1, usage_21_1, visitBlock1, visitNode1, visitNode2, visitNode3, visitNodes2, write1, zipArgs1
+local _2b_1, _2d_1, _2e2e_1, _2f3d_1, _3c3d_1, _3c_1, _3d_1, _3e3d_1, _3e_1, addArgument_21_1, addParen1, any1, append_21_1, apply1, arg1, beginBlock_21_1, between_3f_1, builtin_3f_1, builtins1, caar1, cadr1, car1, child1, coloured1, compileBlock1, compileExpression1, concat1, constVal1, doNodeError_21_1, empty_3f_1, eq_3f_1, error1, escapeVar1, exit_21_1, expectType_21_1, expect_21_1, find1, format1, formatNode1, formatOutput_21_1, getIdx1, getSource1, getVar1, getenv1, getinfo1, gsub1, last1, len_23_1, lex1, line_21_1, list1, lookup1, lower1, makeNil1, map2, match1, min1, n1, next1, nth1, number_3f_1, open1, pcall1, popLast_21_1, pretty1, print1, pushCdr_21_1, pushEscapeVar_21_1, putNodeWarning_21_1, quoted1, removeNth_21_1, rep1, require1, resolveNode1, runPass1, scoreNodes1, self1, setIdx_21_1, sethook1, slice1, slicingView1, sort1, splice1, split1, string_3f_1, sub1, symbol_2d3e_string1, tonumber1, tostring1, type1, type_23_1, unmangleIdent1, usage_21_1, visitBlock1, visitNode1, visitNode2, visitNode3, visitNode4, visitNodes2, zipArgs1
 local _ENV = setmetatable({}, {__index=_ENV or (getfenv and getfenv()) or _G}) if setfenv then setfenv(0, _ENV) end
 _3d_1 = function(v1, v2) return v1 == v2 end
 _2f3d_1 = function(v1, v2) return v1 ~= v2 end
@@ -2031,7 +2031,16 @@ parseDocstring1 = function(str)
 		local temp1 = 1
 		while temp1 <= temp do
 			local tok = tokens1[temp1]
-			local npos = list1(find1(str, nth1(tok, 2), pos))
+			local npos
+			local temp2 = list1(pcall1(function()
+				return list1(find1(str, nth1(tok, 2), pos))
+			end))
+			if car1(temp2) then
+				npos = splice1(slicingView1(temp2, 1))
+			else
+				local temp3 = cadr1(temp2)
+				npos = list1(nil)
+			end
 			if car1(npos) and car1(npos) < spos then
 				spos = car1(npos)
 				epos = nth1(npos, 2)
@@ -7893,7 +7902,7 @@ profileStack1 = function(fn, mappings, args)
 			end
 		end
 		return pushCdr_21_1(stacks, stack)
-	end, "", 100000.0)
+	end, "", 100000)
 	fn()
 	sethook1()
 	local folded = {["n"]=0, ["name"]="<root>"}

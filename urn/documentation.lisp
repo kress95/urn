@@ -68,7 +68,9 @@
 
         ;; Find the next token in the string
         (for-each tok tokens
-          (with (npos (list (string/find str (nth tok 2) pos)))
+          (with (npos (handler-case
+                        (list (string/find str (nth tok 2) pos))
+                        [_ (list nil)]))
             (when (and (car npos) (< (car npos) spos))
               (set! spos (car npos))
               (set! epos (nth npos 2))
